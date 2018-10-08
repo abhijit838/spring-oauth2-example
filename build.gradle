@@ -1,0 +1,55 @@
+// Build script is used by gradle itself
+buildscript {
+	// Update spring boot version to latest if needed
+	ext {
+		springBootVersion = '2.0.5.RELEASE'
+	}
+	repositories {
+		mavenCentral()
+	}
+	// Spring Boot gradle plugin > provides default spring boot tasks
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+// allprojects closure apply tasks to all subprojects including root project
+// Using subprojects closure to apply tasks only on sub projects as root project is blank
+subprojects {
+	apply plugin: 'java'
+	apply plugin: 'eclipse'
+	apply plugin: 'org.springframework.boot'
+	apply plugin: 'io.spring.dependency-management'
+
+	sourceCompatibility = 1.8
+	// Dependency packages repositories
+	repositories {
+		mavenCentral()
+	}
+	configurations {
+		// exclude Tomcat
+		compile.exclude module: 'spring-boot-starter-tomcat'
+	}
+	// Common project dependencies
+	dependencies {
+		compile ('org.springframework.boot:spring-boot-starter-undertow')
+		compile('org.springframework.boot:spring-boot-starter-actuator')
+		compile('org.springframework.boot:spring-boot-starter-data-jpa')
+		compile('org.springframework.boot:spring-boot-starter-web')
+		compile('org.springframework.security.oauth:spring-security-oauth2:2.3.3.RELEASE')
+
+		runtime('org.postgresql:postgresql')
+		runtime('com.h2database:h2')
+		testCompile('org.springframework.boot:spring-boot-starter-test')
+	}
+
+	// Override the jar task inside subprojects if custom package name and version needed
+	// Alternatively bootJar task can also be used for same
+	// Default: package-name > project-name, version > version
+	jar.enabled = true
+}
+
+// Downloads and sets up gradle(no manual installation needed)
+task wrapper(type: Wrapper) {
+	gradleVersion = '4.10.2' //version required
+}

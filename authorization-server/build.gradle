@@ -1,0 +1,7 @@
+group 'com.oauth2'
+version '0.0.1-SNAPSHOT'
+
+//jar {
+//    baseName = 'package-name'
+//    version = version
+//}
