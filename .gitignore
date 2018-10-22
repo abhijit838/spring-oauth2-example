@@ -1,5 +1,6 @@
 .gradle
-/build/
+authorization-server/build/
+resource-server/build/
 !gradle/wrapper/gradle-wrapper.jar
 
 ### STS ###
